@@ -1,0 +1,75 @@
+.swal2-popup {
+  font-family: 'Roboto', sans-serif;
+  border-radius: 15px !important;
+  padding: 2em !important;
+}
+
+.swal2-title {
+  font-size: 1.5em !important;
+  font-weight: 600 !important;
+  color: #333 !important;
+}
+
+.swal2-html-container {
+  font-size: 1.1em !important;
+  line-height: 1.5 !important;
+}
+
+.swal2-confirm {
+  padding: 12px 25px !important;
+  font-size: 1.1em !important;
+  font-weight: 500 !important;
+  border-radius: 8px !important;
+  text-transform: none !important;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1) !important;
+}
+
+.swal2-cancel {
+  padding: 12px 25px !important;
+  font-size: 1.1em !important;
+  font-weight: 500 !important;
+  border-radius: 8px !important;
+  text-transform: none !important;
+  background-color: #f8f9fa !important;
+  color: #6c757d !important;
+  border: 1px solid #dee2e6 !important;
+}
+
+.swal2-icon {
+  border-width: 3px !important;
+}
+
+.swal2-icon.swal2-warning {
+  border-color: #ff9800 !important;
+  color: #ff9800 !important;
+}
+
+.swal2-icon.swal2-error {
+  border-color: #FF6B6B !important;
+  color: #FF6B6B !important;
+}
+
+.swal2-icon.swal2-success {
+  border-color: #4CAF50 !important;
+  color: #4CAF50 !important;
+}
+
+.delete-transaction-popup .swal2-title {
+  color: #d32f2f !important;
+}
+
+.delete-transaction-popup .swal2-content {
+  margin-top: 1em;
+}
+
+.delete-transaction-popup .amount {
+  font-size: 1.2em;
+  font-weight: 600;
+  color: #d32f2f;
+}
+
+.delete-transaction-popup .warning-text {
+  color: #666;
+  font-size: 0.9em;
+  margin-top: 1em;
+}
