@@ -9,12 +9,12 @@ import {
   TextInput,
   Pressable,
   Platform,
-  Alert,
   ActivityIndicator
 } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { supabase } from '../../supabase';
 import { useRouter } from 'expo-router';
+import { showError, showSuccess } from '../utils/toast';
 
 type IconName = 'work' | 'trending-up' | 'laptop' | 'attach-money';
 
@@ -118,7 +118,7 @@ export default function IncomeScreen() {
           setTransactions([]);
           return;
         }
-        Alert.alert('Error', 'No se pudieron cargar los ingresos: ' + loadError.message);
+        showError('Error', 'No se pudieron cargar los ingresos: ' + loadError.message);
         return;
       }
 
@@ -131,7 +131,7 @@ export default function IncomeScreen() {
         setTransactions([]);
         return;
       }
-      Alert.alert('Error', 'Error al cargar las transacciones: ' + error.message);
+      showError('Error', 'Error al cargar las transacciones: ' + error.message);
     }
   };
 
@@ -163,36 +163,27 @@ export default function IncomeScreen() {
     
     if (!isAuthenticated) {
       console.log('Usuario no autenticado, redirigiendo a login...');
-      Alert.alert(
-        'Error de Autenticación',
-        'Por favor inicia sesión para agregar ingresos',
-        [
-          {
-            text: 'Iniciar Sesión',
-            onPress: () => router.push('/auth/login')
-          }
-        ]
-      );
+      showError('Error de Autenticación', 'Por favor inicia sesión para agregar ingresos');
       return;
     }
 
     // Validación de campos
     if (!amount.trim()) {
       console.log('Validación fallida: Monto vacío');
-      Alert.alert('Error', 'Por favor ingresa un monto');
+      showError('Error', 'Por favor ingresa un monto');
       return;
     }
 
     const numericAmount = parseFloat(amount.replace(/[^0-9.]/g, ''));
     if (isNaN(numericAmount) || numericAmount <= 0) {
       console.log('Validación fallida: Monto inválido', amount);
-      Alert.alert('Error', 'El monto debe ser un número válido mayor a 0');
+      showError('Error', 'El monto debe ser un número válido mayor a 0');
       return;
     }
 
     if (!category) {
       console.log('Validación fallida: Categoría no seleccionada');
-      Alert.alert('Error', 'Por favor selecciona una categoría');
+      showError('Error', 'Por favor selecciona una categoría');
       return;
     }
 
@@ -204,7 +195,7 @@ export default function IncomeScreen() {
       
       if (userError || !session) {
         console.error('Error de autenticación:', userError);
-        Alert.alert('Error', 'Por favor inicia sesión nuevamente');
+        showError('Error', 'Por favor inicia sesión nuevamente');
         return;
       }
 
@@ -234,9 +225,9 @@ export default function IncomeScreen() {
       if (error) {
         console.error('Error al guardar:', error);
         if (error.code === '42P01') {
-          Alert.alert('Error', 'La tabla de transacciones no existe. Por favor contacta al administrador.');
+          showError('Error', 'La tabla de transacciones no existe. Por favor contacta al administrador.');
         } else {
-          Alert.alert('Error', 'No se pudo guardar el ingreso: ' + error.message);
+          showError('Error', 'No se pudo guardar el ingreso: ' + error.message);
         }
         return;
       }
@@ -246,10 +237,10 @@ export default function IncomeScreen() {
       await loadTransactions();
       setModalVisible(false);
       resetForm();
-      Alert.alert('Éxito', 'Ingreso guardado correctamente');
+      showSuccess('Éxito', 'Ingreso guardado correctamente');
     } catch (error: any) {
       console.error('Error inesperado:', error);
-      Alert.alert('Error', 'Ocurrió un error inesperado: ' + (error.message || 'Por favor intenta nuevamente'));
+      showError('Error', 'Ocurrió un error inesperado: ' + (error.message || 'Por favor intenta nuevamente'));
     } finally {
       setLoading(false);
     }
@@ -263,13 +254,14 @@ export default function IncomeScreen() {
         .eq('id', id);
 
       if (error) {
-        Alert.alert('Error', 'No se pudo eliminar el ingreso');
+        showError('Error', 'No se pudo eliminar el ingreso');
         return;
       }
 
       await loadTransactions();
+      showSuccess('Éxito', 'Transacción eliminada correctamente');
     } catch (error: any) {
-      Alert.alert('Error', error.message);
+      showError('Error', error.message);
     }
   };
 
@@ -296,14 +288,7 @@ export default function IncomeScreen() {
       <TouchableOpacity
         style={styles.deleteButton}
         onPress={() => {
-          Alert.alert(
-            'Confirmar',
-            '¿Estás seguro de que quieres eliminar esta transacción?',
-            [
-              { text: 'Cancelar', style: 'cancel' },
-              { text: 'Eliminar', onPress: () => deleteTransaction(item.id), style: 'destructive' }
-            ]
-          );
+          deleteTransaction(item.id);
         }}
       >
         <MaterialIcons name="delete" size={20} color="#2E7D32" />

@@ -5,13 +5,13 @@ import {
   TextInput,
   TouchableOpacity,
   StyleSheet,
-  Alert,
   ActivityIndicator,
   ImageBackground,
 } from 'react-native';
-import { router } from 'expo-router';
+import { Link, router } from 'expo-router';
 import { useAuth } from '../../context/AuthContext';
 import { MaterialIcons } from '@expo/vector-icons';
+import { showError } from '../utils/toast';
 
 export default function LoginScreen() {
   const [gmail, setGmail] = useState('');
@@ -21,7 +21,7 @@ export default function LoginScreen() {
 
   const handleLogin = async () => {
     if (!gmail || !contrasena) {
-      Alert.alert('Error', 'Por favor completa todos los campos');
+      showError('Error', 'Por favor completa todos los campos');
       return;
     }
 
@@ -31,7 +31,7 @@ export default function LoginScreen() {
       router.replace('/(tabs)/welcome');
     } catch (error: any) {
       console.error('Error inesperado:', error);
-      Alert.alert('Error', error.message);
+      showError('Error', error.message);
     } finally {
       setLoading(false);
     }

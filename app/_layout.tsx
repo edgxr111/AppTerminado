@@ -3,12 +3,14 @@ import { Stack, useRootNavigationState, router } from 'expo-router';
 import { AuthProvider, useAuth } from '../context/AuthContext';
 import { AppProvider } from '../context/AppContext';
 import { useEffect } from 'react';
+import Toast from 'react-native-toast-message';
 
 export default function RootLayout() {
   return (
     <AuthProvider>
       <AppProvider>
         <RootLayoutNav />
+        <Toast />
       </AppProvider>
     </AuthProvider>
   );

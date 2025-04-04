@@ -12,8 +12,8 @@ import {
   ScrollView,
   TouchableOpacity,
   Pressable,
-  Alert
 } from 'react-native';
+import { showError, showInfo, showSuccess } from '../utils/toast';
 import { MaterialIcons } from '@expo/vector-icons';
 import { useAuth } from '../../context/AuthContext';
 import { supabase, TABLES } from '../../supabase';
@@ -82,64 +82,24 @@ const CATEGORIAS_DEFAULT = [
 ];
 
 const mostrarMensaje = async (titulo: string, mensaje: string, tipo: 'success' | 'error' | 'warning' = 'success') => {
-  Alert.alert(
-    titulo,
-    mensaje,
-    [{ text: 'Aceptar' }],
-    { cancelable: false }
-  );
+  showInfo('Información', mensaje);
 };
 
 const confirmarEliminacion = async (monto: number): Promise<boolean> => {
   return new Promise((resolve) => {
-    Alert.alert(
-      '¿Eliminar transacción?',
-      `Estás a punto de eliminar una transacción por: $${monto.toFixed(2)}\n\nEsta acción no se puede deshacer`,
-      [
-        {
-          text: 'Cancelar',
-          style: 'cancel',
-          onPress: () => resolve(false)
-        },
-        {
-          text: 'Sí, eliminar',
-          style: 'destructive',
-          onPress: () => resolve(true)
-        }
-      ],
-      { cancelable: false }
-    );
+    showInfo('¿Eliminar transacción?', `Estás a punto de eliminar una transacción por: $${monto.toFixed(2)}\n\nEsta acción no se puede deshacer`);
+    resolve(true);
   });
 };
 
 const mostrarRecomendacionesSaldoNegativo = async (saldoActual: number) => {
-  Alert.alert(
-    'Recomendaciones para mejorar tu saldo',
-    `Saldo actual: $${saldoActual.toFixed(2)}\n\nAcciones inmediatas:\n1. Evita gastos no esenciales\n2. Busca alternativas económicas\n3. Considera ingresos adicionales\n\nPlan a largo plazo:\n• Establece un presupuesto mensual\n• Crea un fondo de emergencia\n• Revisa y ajusta tus gastos`,
-    [{ text: 'Entendido' }],
-    { cancelable: false }
-  );
+  showInfo('Recomendaciones', 'Para mejorar tu situación financiera, considera:\n1. Reducir gastos no esenciales\n2. Buscar fuentes adicionales de ingreso\n3. Crear un presupuesto mensual\n4. Establecer metas de ahorro');
 };
 
 const mostrarAdvertenciaSaldoNegativo = async (monto: number, saldo: number): Promise<boolean> => {
   return new Promise((resolve) => {
-    Alert.alert(
-      'Advertencia de Saldo',
-      `El gasto excede tu saldo actual:\n\nMonto del gasto: $${monto.toFixed(2)}\nSaldo actual: $${saldo.toFixed(2)}\n\n¿Desea continuar? Tu saldo quedará en negativo.`,
-      [
-        {
-          text: 'Cancelar',
-          style: 'cancel',
-          onPress: () => resolve(false)
-        },
-        {
-          text: 'Sí, continuar',
-          style: 'destructive',
-          onPress: () => resolve(true)
-        }
-      ],
-      { cancelable: false }
-    );
+    showInfo('Advertencia de Saldo', `El gasto excede tu saldo actual:\n\nMonto del gasto: $${monto.toFixed(2)}\nSaldo actual: $${saldo.toFixed(2)}\n\n¿Desea continuar? Tu saldo quedará en negativo.`);
+    resolve(true);
   });
 };
 

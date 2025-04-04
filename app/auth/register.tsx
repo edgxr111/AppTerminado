@@ -5,13 +5,13 @@ import {
   TextInput,
   TouchableOpacity,
   StyleSheet,
-  Alert,
   ActivityIndicator,
   ScrollView,
 } from 'react-native';
 import { router } from 'expo-router';
 import { useAuth } from '../../context/AuthContext';
 import { MaterialIcons } from '@expo/vector-icons';
+import { showError, showSuccess } from '../utils/toast';
 
 export default function RegisterScreen() {
   const [nombre, setNombre] = useState('');
@@ -25,17 +25,17 @@ export default function RegisterScreen() {
 
   const handleRegister = async () => {
     if (!nombre || !apellido || !usuario || !gmail || !contrasena || !confirmPassword) {
-      Alert.alert('Error', 'Por favor completa todos los campos');
+      showError('Error', 'Por favor completa todos los campos');
       return;
     }
 
     if (contrasena !== confirmPassword) {
-      Alert.alert('Error', 'Las contraseñas no coinciden');
+      showError('Error', 'Las contraseñas no coinciden');
       return;
     }
 
     if (contrasena.length < 6) {
-      Alert.alert('Error', 'La contraseña debe tener al menos 6 caracteres');
+      showError('Error', 'La contraseña debe tener al menos 6 caracteres');
       return;
     }
 
@@ -43,19 +43,11 @@ export default function RegisterScreen() {
       setLoading(true);
       await signUp(nombre, apellido, usuario, gmail, contrasena);
 
-      Alert.alert(
-        '¡Registro Exitoso!',
-        'Tu cuenta ha sido creada correctamente. Por favor, inicia sesión.',
-        [
-          {
-            text: 'OK',
-            onPress: () => router.replace('/auth/login')
-          }
-        ]
-      );
+      showSuccess('Registro exitoso', 'Tu cuenta ha sido creada correctamente');
+      router.replace('/(tabs)/welcome');
     } catch (error: any) {
       console.error('Error inesperado:', error);
-      Alert.alert('Error', error.message);
+      showError('Error', error.message);
     } finally {
       setLoading(false);
     }

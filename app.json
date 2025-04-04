@@ -1,10 +1,10 @@
 {
   "expo": {
     "name": "CalculadoraPoblacion",
-    "slug": "CalculadoraPoblacion",
+    "slug": "billetera",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/images/MoneyFlow.jpg",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
@@ -43,7 +43,7 @@
         "origin": false
       },
       "eas": {
-        "projectId": "9cf77cab-ffe9-4c4c-85d2-39ae3484fdf8"
+        "projectId": "9af1826e-7b2d-4e88-8d93-b79a86514dd6"
       }
     },
     "owner": "edgxr"
